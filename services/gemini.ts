@@ -1,9 +1,23 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Fallback for environments where process might not be defined globally
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || '';
+  } catch {
+    return '';
+  }
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export async function getThinkBotResponse(prompt: string, history: { role: string; content: string }[], currentLang: string = 'en') {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    return "API Key missing. Please configure your environment variables.";
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',

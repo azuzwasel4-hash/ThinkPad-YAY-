@@ -1,7 +1,15 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || '';
+  } catch {
+    return '';
+  }
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export interface MarketInsight {
   text: string;
@@ -9,6 +17,14 @@ export interface MarketInsight {
 }
 
 export async function getMarketAnalysis(language: string = 'en'): Promise<MarketInsight> {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    return {
+      text: "Market analysis unavailable: API Key not configured.",
+      sources: [],
+    };
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
