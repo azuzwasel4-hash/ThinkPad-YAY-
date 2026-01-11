@@ -1,0 +1,7 @@
+{
+  "name": "ThinkPad YAY!!",
+  "description": "The ultimate central hub for ThinkPad enthusiasts: buy new, resell used, find spare parts, and join a vibrant community forum with AI-powered troubleshooting.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
